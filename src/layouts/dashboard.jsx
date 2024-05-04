@@ -7,6 +7,8 @@ import { Footer } from "../components/layouts/footer.jsx"
 import routes from "../routes.jsx";
 import { useMaterialTailwindController, setOpenConfigurator } from "../context/index.jsx";
 
+import { ToastContainer } from "react-toastify";
+
 export function Dashboard() {
   const [controller, dispatch] = useMaterialTailwindController();
   const { sidenavType } = controller;
@@ -30,6 +32,18 @@ export function Dashboard() {
               ))
           )}
         </Routes>
+        <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        />
         <div className="text-blue-gray-600">
           <Footer />
         </div>

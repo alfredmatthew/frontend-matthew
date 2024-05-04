@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { Dashboard } from "./layouts/dashboard";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
