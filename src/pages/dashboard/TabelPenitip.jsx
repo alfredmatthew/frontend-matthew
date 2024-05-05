@@ -174,7 +174,7 @@ export function TabelPenitip() {
           ripple="light"
           onClick={() => {
             setShowInputModal(true);
-            // Reset formData state to empty
+
             setFormData({
               nama_penitip: "",
               no_telp_penitip: "",
@@ -267,7 +267,6 @@ export function TabelPenitip() {
                       </IconButton>
                     </td>
 
-                    {/* Dialog for this row */}
                     {openDialogMap[penitip.id_penitip] && (
                       <Dialog open={openDialogMap[penitip.id_penitip]} handler={() => handleOpenDialogForRow(penitip.id_penitip)}>
                         <DialogHeader>Apakah anda ingin menghapus data?</DialogHeader>
@@ -299,12 +298,14 @@ export function TabelPenitip() {
         </CardBody>
       </Card>
 
-      <HalamanPagination 
-        totalPosts = {penitips.length}
-        postsPerPage = {postsPerPage}
-        setCurrentPage = {setCurrentPage}
-        currentPage = {currentPage}
-      />
+      {penitips.length > postsPerPage && (
+        <HalamanPagination 
+          totalPosts = {penitips.length}
+          postsPerPage = {postsPerPage}
+          setCurrentPage = {setCurrentPage}
+          currentPage = {currentPage}
+        />
+      )}
 
     </div>
   );

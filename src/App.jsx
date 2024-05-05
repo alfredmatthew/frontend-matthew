@@ -6,7 +6,7 @@ function App() {
   return (
     <Routes>
       <Route path="/dashboard/*" element={<Dashboard />} />
-      <Route path="*" element={<Navigate to="/dashboard/tabelpenitip" replace />} />
+      <Route path="*" element={<Navigate to="/dashboard/penitip" replace />} />
     </Routes>
   );
 }

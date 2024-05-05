@@ -2,7 +2,6 @@ import { Routes, Route } from "react-router-dom";
 
 import { DashboardNavbar } from "../components/layouts/dashboard-navbar.jsx"
 import { Sidenav } from "../components/layouts/sidenav.jsx"
-import { Footer } from "../components/layouts/footer.jsx"
 
 import routes from "../routes.jsx";
 import { useMaterialTailwindController, setOpenConfigurator } from "../context/index.jsx";
@@ -44,9 +43,6 @@ export function Dashboard() {
         pauseOnHover
         theme="light"
         />
-        <div className="text-blue-gray-600">
-          <Footer />
-        </div>
       </div>
     </div>
   );

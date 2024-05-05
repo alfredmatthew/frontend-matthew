@@ -14,7 +14,7 @@ import {
         {
           icon: <TableCellsIcon {...icon} />,
           name: "Penitip",
-          path: "/tabelpenitip",
+          path: "/penitip",
           element: <TabelPenitip />,
         },
       ],
