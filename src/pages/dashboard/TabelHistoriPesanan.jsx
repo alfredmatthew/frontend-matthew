@@ -20,15 +20,30 @@
   
     const handleSearchChange = (e) => {
       setSearchQuery(e.target.value);
-    };
+      if (e.target.value === "") {
+        fetchHistoriPemesanan();
+      }
+    };    
   
     const handleSearch = () => {
       if (searchQuery.trim() !== "") {
-        // Implement your search logic here
+        const filteredHistoriPemesanan = historiPemesanan.filter((customer) =>
+          customer.nama_customer.toLowerCase() === searchQuery.toLowerCase()
+        );
+        setHistoriPemesanan(filteredHistoriPemesanan);
+    
+        // Display toast based on search results
+        if (filteredHistoriPemesanan.length > 0) {
+          toast.success("Data ditemukan.");
+        } else {
+          toast.error("Data tidak ditemukan.");
+        }
       } else {
         fetchHistoriPemesanan();
       }
     };
+    
+    
   
     const fetchHistoriPemesanan = async () => {
       try {
