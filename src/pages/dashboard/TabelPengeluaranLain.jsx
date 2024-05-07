@@ -33,11 +33,10 @@ export function TabelPengeluaranLain() {
 
   const [openDialogMap, setOpenDialogMap] = useState({});
 
-  // Function to handle opening and closing dialog for a specific row
   const handleOpenDialogForRow = (id_pengeluaran) => {
     setOpenDialogMap((prevMap) => ({
       ...prevMap,
-      [id_pengeluaran]: !prevMap[id_pengeluaran], // Toggle dialog state for this row
+      [id_pengeluaran]: !prevMap[id_pengeluaran],
     }));
   };
 
@@ -97,7 +96,7 @@ export function TabelPengeluaranLain() {
       .then((response) => {
         toast.success(response.message);
         setShowInputModal(false);
-        fetchPengeluarans(); // Update the list of pengeluarans
+        fetchPengeluarans();
       })
       .catch((err) => {
         const errorMessage = Object.values(err.message)[0][0];
@@ -112,7 +111,7 @@ export function TabelPengeluaranLain() {
       .then((response) => {
         toast.success(response.message);
         setShowUpdateModal(false);
-        fetchPengeluarans(); // Update the list of pengeluarans
+        fetchPengeluarans();
       })
       .catch((err) => {
         const errorMessage = Object.values(err.message)[0][0];

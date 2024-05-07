@@ -33,11 +33,10 @@ export function TabelPenitip() {
 
   const [openDialogMap, setOpenDialogMap] = useState({});
 
-  // Function to handle opening and closing dialog for a specific row
   const handleOpenDialogForRow = (id_penitip) => {
     setOpenDialogMap((prevMap) => ({
       ...prevMap,
-      [id_penitip]: !prevMap[id_penitip], // Toggle dialog state for this row
+      [id_penitip]: !prevMap[id_penitip],
     }));
   };
 
@@ -111,7 +110,7 @@ export function TabelPenitip() {
       .then((response) => {
         toast.success(response.message);
         setShowUpdateModal(false);
-        fetchPenitips(); // Update the list of penitips
+        fetchPenitips();
       })
       .catch((err) => {
         const errorMessage = Object.values(err.message)[0][0];

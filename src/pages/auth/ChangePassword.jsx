@@ -16,7 +16,6 @@ export function ChangePassword() {
   const [isPasswordValid, setIsPasswordValid] = useState(true);
 
   const validatePassword = (password) => {
-    // Regular expression for password validation
     const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
     return regex.test(password);
   };
@@ -34,20 +33,19 @@ export function ChangePassword() {
       return;
     }
 
-    // Handle password reset logic here
     console.log('Password reset successfully');
   };
 
   const handleChangeNewPassword = (e) => {
     setNewPassword(e.target.value);
-    setPasswordError(''); // Reset password error when the user starts typing
-    setIsPasswordValid(true); // Reset password validity
+    setPasswordError('');
+    setIsPasswordValid(true);
   };
 
   const handleChangeConfirmPassword = (e) => {
     setConfirmPassword(e.target.value);
-    setPasswordError(''); // Reset password error when the user starts typing
-    setIsPasswordValid(true); // Reset password validity
+    setPasswordError('');
+    setIsPasswordValid(true);
   };
 
   return (
