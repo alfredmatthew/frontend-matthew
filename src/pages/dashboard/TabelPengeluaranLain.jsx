@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Card,
   CardHeader,
@@ -12,32 +12,32 @@ import {
   DialogBody,
   DialogFooter,
 } from "@material-tailwind/react";
-import { GetAllPenitips, CreatePenitip, GetPenitipByName, DeletePenitip, UpdatePenitip } from "../../api/apiPenitip";
-import { useEffect } from "react";
+import { GetAllPengeluaranLain, CreatePengeluaranLain, DeletePengeluaranLain, UpdatePengeluaranLain, GetPengeluaranLainByDate } from "../../api/apiPengeluaranLain";
 import { MagnifyingGlassIcon, PencilIcon, XCircleIcon } from "@heroicons/react/24/solid";
 import { toast } from "react-toastify";
 import { HalamanPagination } from "../../components/cards/paginatinon.jsx";
-import { InputModalPenitip } from "../../components/inputs/InputModalPenitip.jsx";
-import { UpdateModalPenitip } from "../../components/updates/UpdateModalPenitip.jsx";
+import { InputModalPengeluaranLain } from "../../components/inputs/InputModalPengeluaranLain.jsx";
+import { UpdateModalPengeluaranLain } from "../../components/updates/UpdateModalPengeluaranLain.jsx";
 
-export function TabelPenitip() {
-  const [penitips, setPenitips] = useState([]);
+export function TabelPengeluaranLain() {
+  const [pengeluarans, setPengeluarans] = useState([]);
   const [showInputModal, setShowInputModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [formData, setFormData] = useState({
-    id: "",
-    nama_penitip: "",
-    no_telp_penitip: "",
-    alamat_penitip: "",
+    id_pengeluaran: "",
+    tanggal_pengeluaran: "",
+    kategori_pengeluaran: "",
+    detail_pengeluaran: "",
+    biaya: "",
   });
 
   const [openDialogMap, setOpenDialogMap] = useState({});
 
   // Function to handle opening and closing dialog for a specific row
-  const handleOpenDialogForRow = (id_penitip) => {
+  const handleOpenDialogForRow = (id_pengeluaran) => {
     setOpenDialogMap((prevMap) => ({
       ...prevMap,
-      [id_penitip]: !prevMap[id_penitip], // Toggle dialog state for this row
+      [id_pengeluaran]: !prevMap[id_pengeluaran], // Toggle dialog state for this row
     }));
   };
 
@@ -48,34 +48,34 @@ export function TabelPenitip() {
 
   const handleSearch = () => {
     if (searchQuery.trim() !== "") {
-      GetPenitipByName(searchQuery)
-        .then((response) => {
-          setcurrentPosts(response);
-          toast.success("Penitip Found");
-        })
-        .catch((err) => {
-          toast.error("Penitip Not Found");
-        });
-    } else {
-      fetchPenitips();
-    }
+        GetPengeluaranLainByDate(searchQuery)
+          .then((response) => {
+            setcurrentPosts(response);
+            toast.success("Pengeluaran Lain Found");
+          })
+          .catch((err) => {
+            toast.error("Pengeluaran Lain Not Found");
+          });
+      } else {
+        fetchPengeluarans();
+      }
   };
 
-  const fetchPenitips = () => {
-    GetAllPenitips()
+  const fetchPengeluarans = () => {
+    GetAllPengeluaranLain()
       .then((response) => {
-        setPenitips(response);
+        setPengeluarans(response);
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
-  const deletePenitip = (id) => {
-    DeletePenitip(id)
+  const deletePengeluaran = (id) => {
+    DeletePengeluaranLain(id)
       .then((response) => {
         toast.success(response.message);
-        setPenitips(penitips.filter(penitip => penitip.id_penitip !== id));
+        setPengeluarans(pengeluarans.filter(pengeluaran => pengeluaran.id_pengeluaran !== id));
       })
       .catch((err) => {
         const errorMessage = Object.values(err.message)[0][0];
@@ -93,11 +93,11 @@ export function TabelPenitip() {
 
   const submitData = (event) => {
     event.preventDefault();
-    CreatePenitip(formData)
+    CreatePengeluaranLain(formData)
       .then((response) => {
         toast.success(response.message);
         setShowInputModal(false);
-        fetchPenitips();
+        fetchPengeluarans(); // Update the list of pengeluarans
       })
       .catch((err) => {
         const errorMessage = Object.values(err.message)[0][0];
@@ -107,11 +107,12 @@ export function TabelPenitip() {
 
   const updateData = (event) => {
     event.preventDefault();
-    UpdatePenitip(formData)
+    console.log(formData)
+    UpdatePengeluaranLain(formData)
       .then((response) => {
         toast.success(response.message);
         setShowUpdateModal(false);
-        fetchPenitips(); // Update the list of penitips
+        fetchPengeluarans(); // Update the list of pengeluarans
       })
       .catch((err) => {
         const errorMessage = Object.values(err.message)[0][0];
@@ -119,32 +120,33 @@ export function TabelPenitip() {
       });
   };
 
-  const openUpdateModal = (penitip) => {
+  const openUpdateModal = (pengeluaran) => {
     setFormData({
-      id: penitip.id_penitip,
-      nama_penitip: penitip.nama_penitip,
-      no_telp_penitip: penitip.no_telp_penitip,
-      alamat_penitip: penitip.alamat_penitip,
+      id_pengeluaran: pengeluaran.id_pengeluaran,
+      tanggal_pengeluaran: pengeluaran.tanggal_pengeluaran,
+      kategori_pengeluaran: pengeluaran.kategori_pengeluaran,
+      detail_pengeluaran: pengeluaran.detail_pengeluaran,
+      biaya: pengeluaran.biaya,
     });
     setShowUpdateModal(true);
   };
+  
+  useEffect(() => {
+    fetchPengeluarans();
+  }, []);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage, setPostsPerpage] = useState(5);
-  
-  useEffect(() => {
-    fetchPenitips();
-  }, []);
-
   
   const lastPostIndex = currentPage * postsPerPage;
   const firstPostIndex = lastPostIndex - postsPerPage;
   const [currentPosts, setcurrentPosts] = useState([]);
 
   useEffect(() => {
-    const newCurrentPosts = penitips.slice(firstPostIndex, lastPostIndex);
+    const newCurrentPosts = pengeluarans.slice(firstPostIndex, lastPostIndex);
     setcurrentPosts(newCurrentPosts);
-  }, [penitips, firstPostIndex, lastPostIndex]);
+    console.log(pengeluarans)
+  }, [pengeluarans, firstPostIndex, lastPostIndex]);
 
   return (
     <div className="mt-4 mb-8 flex flex-col gap-12">
@@ -152,7 +154,7 @@ export function TabelPenitip() {
       <div className="flex justify-end items-center mb-4">
         <div className="mr-auto md:mr-4 md:w-26">
           <Input
-            label="Cari Penitip"
+            label="Cari Pengeluaran"
             icon={<MagnifyingGlassIcon className="h-4 w-4 text-blue-gray-500" />}
             value={searchQuery}
             onChange={handleSearchChange}
@@ -176,43 +178,44 @@ export function TabelPenitip() {
             setShowInputModal(true);
 
             setFormData({
-              nama_penitip: "",
-              no_telp_penitip: "",
-              alamat_penitip: "",
+              tanggal_pengeluaran: "",
+              kategori_pengeluaran: "",
+              detail_pengeluaran: "",
+              biaya: "",
             });
           }}
         >
-          Tambah Penitip
+          Tambah Pengeluaran
         </Button>
       </div>
 
-      <UpdateModalPenitip 
-        showUpdateModal={showUpdateModal} 
-        formData={formData} 
-        handleInputChange={handleInputChange} 
-        updateData={updateData} 
-        setShowUpdateModal={setShowUpdateModal} 
+      <UpdateModalPengeluaranLain
+        showUpdateModal={showUpdateModal}
+        formData={formData}
+        handleInputChange={handleInputChange}
+        updateData={updateData}
+        setShowUpdateModal={setShowUpdateModal}
       />
 
-      <InputModalPenitip 
-        showInputModal={showInputModal} 
-        formData={formData} 
-        handleInputChange={handleInputChange} 
-        submitData={submitData} 
-        setShowInputModal={setShowInputModal} 
+      <InputModalPengeluaranLain
+        showInputModal={showInputModal}
+        formData={formData}
+        handleInputChange={handleInputChange}
+        submitData={submitData}
+        setShowInputModal={setShowInputModal}
       />
 
       <Card>
         <CardHeader variant="gradient" color="gray" className="mb-8 p-6">
           <Typography variant="h6" color="white">
-            Tabel Penitip
+            Tabel Pengeluaran Lain
           </Typography>
         </CardHeader>
         <CardBody className="overflow-x-scroll px-0 pt-0 pb-2">
           <table className="w-full min-w-[640px] table-auto">
             <thead>
               <tr>
-                {["Nama Penitip", "Nomor Telepon", "Alamat", ""].map((data) => (
+                {["Tanggal", "Kategori", "Detail", "Biaya", ""].map((data) => (
                   <th
                     key={data}
                     className="border-b border-blue-gray-50 py-3 px-5 text-left"
@@ -228,7 +231,7 @@ export function TabelPenitip() {
               </tr>
             </thead>
             <tbody>
-              {(Array.isArray(currentPosts) ? currentPosts : [currentPosts]).map((penitip, index) => {
+              {(Array.isArray(currentPosts) ? currentPosts : [currentPosts]).map((pengeluaran, index) => {
                 const className = `py-3 px-5 ${
                   index === currentPosts.length - 1
                     ? ""
@@ -236,39 +239,43 @@ export function TabelPenitip() {
                 }`;
                 
                 return (
-                  
-                  <tr key={penitip.id_penitip}>      
-
+                  <tr key={pengeluaran.id_pengeluaran}>      
                     <td className={`${className} min-w-[0] max-h-[80px] whitespace-normal`}>
                       <Typography className="text-xs font-semibold text-blue-gray-600">
-                        {penitip.nama_penitip}
+                        {pengeluaran.tanggal_pengeluaran}
                       </Typography>
                     </td>
 
                     <td className={`${className} min-w-[0] max-h-[80px] whitespace-normal`}>
                       <Typography className="text-xs font-semibold text-blue-gray-600">
-                        {penitip.no_telp_penitip}
+                        {pengeluaran.kategori_pengeluaran}
                       </Typography>
                     </td>
 
                     <td className={`${className} min-w-[0] max-h-[80px] whitespace-normal`}>
                       <Typography className="text-xs font-semibold text-blue-gray-600">
-                        {penitip.alamat_penitip}
+                        {pengeluaran.detail_pengeluaran}
+                      </Typography>
+                    </td>
+
+                    <td className={`${className} min-w-[0] max-h-[80px] whitespace-normal`}>
+                      <Typography className="text-xs font-semibold text-blue-gray-600">
+                        {pengeluaran.biaya}
                       </Typography>
                     </td>
 
                     <td className={`${className} min-w-[100] max-h-[80px] whitespace-normal`}>
-                      <IconButton variant="text" onClick={() => handleOpenDialogForRow(penitip.id_penitip)}>
+                      <IconButton variant="text" onClick={() => handleOpenDialogForRow(pengeluaran.id_pengeluaran)}>
                         <XCircleIcon className="h-4 w-4 text-blue-gray-500" />
                       </IconButton>
                       
-                      <IconButton variant="text" onClick={() => openUpdateModal(penitip)}>
+                      <IconButton variant="text" onClick={() => openUpdateModal(pengeluaran)}>
                         <PencilIcon className="h-4 w-4 text-blue-gray-500" />
                       </IconButton>
                     </td>
 
-                    {openDialogMap[penitip.id_penitip] && (
-                      <Dialog open={openDialogMap[penitip.id_penitip]} handler={() => handleOpenDialogForRow(penitip.id_penitip)}>
+                    {openDialogMap[pengeluaran.id_pengeluaran] && (
+                      <Dialog open={openDialogMap[pengeluaran.id_pengeluaran]} handler={() => handleOpenDialogForRow(pengeluaran.id_pengeluaran)}>
                         <DialogHeader>Apakah anda ingin menghapus data?</DialogHeader>
                         <DialogBody>
                           Untuk menghapus data, dapat dilakukan dengan menekan tombol "CONFIRM",
@@ -278,12 +285,12 @@ export function TabelPenitip() {
                           <Button
                             variant="text"
                             color="red"
-                            onClick={() => handleOpenDialogForRow(penitip.id_penitip)}
+                            onClick={() => handleOpenDialogForRow(pengeluaran.id_pengeluaran)}
                             className="mr-1"
                           >
                             <span>Cancel</span>
                           </Button>
-                          <Button variant="gradient" color="green" onClick={() => deletePenitip(penitip.id_penitip)}>
+                          <Button variant="gradient" color="green" onClick={() => deletePengeluaran(pengeluaran.id_pengeluaran)}>
                             <span>Confirm</span>
                           </Button>
                         </DialogFooter>
@@ -298,9 +305,9 @@ export function TabelPenitip() {
         </CardBody>
       </Card>
 
-      {penitips.length > postsPerPage && (
+      {pengeluarans.length > postsPerPage && (
         <HalamanPagination 
-          totalPosts = {penitips.length}
+          totalPosts = {pengeluarans.length}
           postsPerPage = {postsPerPage}
           setCurrentPage = {setCurrentPage}
           currentPage = {currentPage}

@@ -42,6 +42,7 @@ export function Dashboard() {
         draggable
         pauseOnHover
         theme="light"
+        style={{ zIndex: 999999 }}
         />
       </div>
     </div>

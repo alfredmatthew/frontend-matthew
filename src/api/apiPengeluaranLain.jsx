@@ -1,9 +1,9 @@
 import useAxios from ".";
 
-// Mendapatkan semua penitip untuk ditaruh di halaman dashboard
-export const GetAllPenitips = async () => {
+// Mendapatkan semua Pengeluaran Lain untuk ditaruh di halaman dashboard
+export const GetAllPengeluaranLain = async () => {
   try {
-    const response = await useAxios.get("/penitips", {
+    const response = await useAxios.get("/pengeluaranlains", {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${sessionStorage.getItem("token")}`,
@@ -15,10 +15,10 @@ export const GetAllPenitips = async () => {
   }
 };
 
-  //  Mendapatkan Penitip by nama penitip
-  export const GetPenitipByName = async (nama_penitip) => {
+  // Mendapatkan Pengeluaran Lain by tanggal
+  export const GetPengeluaranLainByDate = async (tanggal_pengeluaran) => {
     try {
-      const response = await useAxios.get(`/penitips/${nama_penitip}`, {
+      const response = await useAxios.get(`/pengeluaranlains/${tanggal_pengeluaran}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${sessionStorage.getItem("token")}`,
@@ -30,12 +30,12 @@ export const GetAllPenitips = async () => {
     }
   };
   
-  // Membuat Penitip baru
-  export const CreatePenitip = async (data) => {
+  // Membuat Pengeluaran Lain baru
+  export const CreatePengeluaranLain = async (data) => {
     try {
-      const response = await useAxios.post("/penitips", data, {
+      const response = await useAxios.post("/pengeluaranlains", data, {
         headers: {
-          "Content-Type": "application/json", // untuk upload thumbnail
+          "Content-Type": "application/json",
           Authorization: `Bearer ${sessionStorage.getItem("token")}`,
         },
       });
@@ -45,10 +45,10 @@ export const GetAllPenitips = async () => {
     }
   };
 
-// Mengedit penitip
-export const UpdatePenitip = async (values) => {
+// Mengedit Pengeluaran Lain
+export const UpdatePengeluaranLain = async (values) => {
     try {
-      const response = await useAxios.put(`/penitips/${values.id}`, values, {
+      const response = await useAxios.put(`/pengeluaranlains/${values.id_pengeluaran}`, values, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${sessionStorage.getItem("token")}`,
@@ -60,11 +60,11 @@ export const UpdatePenitip = async (values) => {
     }
   };
   
-  // Menghapus penitpi
-  export const DeletePenitip = async (id) => {
+  // Menghapus Pengeluaran Lain
+  export const DeletePengeluaranLain = async (id) => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
     try {
-      const response = await useAxios.delete(`/penitips/${id}`, {
+      const response = await useAxios.delete(`/pengeluaranlains/${id}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${sessionStorage.getItem("token")}`,
