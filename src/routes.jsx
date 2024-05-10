@@ -16,7 +16,14 @@ import {
   const icon = {
     className: "w-5 h-5 text-inherit",
   };
-  
+  const DashboardWithToken = () => {
+    return (
+      <div>
+        <h1>Hello</h1>
+      </div>
+    );
+  }
+
   export const routes = [
     {
       layout: "dashboard",
@@ -54,7 +61,7 @@ import {
         {
           icon: <ArrowPathRoundedSquareIcon {...icon} />,
           name: "Change Password",
-          path: "/changepassword",
+          path: "/changepassword/:token",
           element: <ChangePassword />,
         },
       ],

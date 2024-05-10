@@ -76,7 +76,7 @@
         <div className="flex justify-end items-center mb-4">
           <div className="mr-auto md:mr-4 md:w-26">
             <Input
-              label="Cari Pengeluaran"
+              label="Cari Histori"
               icon={<MagnifyingGlassIcon className="h-4 w-4 text-blue-gray-500" />}
               value={searchQuery}
               onChange={handleSearchChange}

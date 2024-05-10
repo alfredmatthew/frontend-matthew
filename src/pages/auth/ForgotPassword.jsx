@@ -1,3 +1,5 @@
+// ForgotPassword.js
+
 import React, { useState } from 'react';
 import {
   Card,
@@ -9,34 +11,40 @@ import {
   Button,
 } from "@material-tailwind/react";
 import { ExclamationCircleIcon } from "@heroicons/react/24/solid";
+import { sendRecoveryEmail } from '../../api/apiForgotPassword';
+import { toast } from "react-toastify";
 
 export function ForgotPassword() {
   const [email, setEmail] = useState('');
   const [recoverySent, setRecoverySent] = useState(false);
-  const [emailError, setEmailError] = useState('');
   const [isEmailValid, setIsEmailValid] = useState(true);
 
   const validateEmail = (value) => {
-    // Regular expression for email validation
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(value);
   };
 
-  const handleSendRecoveryEmail = () => {
+  const handleSendRecoveryEmail = async (event) => {
+    event.preventDefault();
+
     if (!validateEmail(email)) {
-      setEmailError('Please enter a valid email address.');
+      toast.error('Please enter a valid email address.');
       setIsEmailValid(false);
       return;
     }
 
-    console.log(`Recovery email sent to ${email}`);
-    setRecoverySent(true);
+    try {
+      const response = await sendRecoveryEmail({ email });
+      toast.success(response.message);
+      setRecoverySent(true);
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   const handleChangeEmail = (e) => {
     setEmail(e.target.value);
-    setEmailError(''); // Reset email error when the user starts typing
-    setIsEmailValid(true); // Reset email validity
+    setIsEmailValid(true);
   };
 
   return (
@@ -55,24 +63,16 @@ export function ForgotPassword() {
           <Typography variant="body" className="mb-2">
             Forgot your account’s password? Enter your email address and we’ll send you a recovery link.
           </Typography>
-          <div className="relative">
-            <Input
-              label="Email"
-              size="lg"
-              value={email}
-              onChange={handleChangeEmail}
-              className={` ${!isEmailValid ? 'border-red-500' : ''}`}
-              disabled={recoverySent}
-            />
-            {!isEmailValid && (
-              <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                <ExclamationCircleIcon className="h-5 w-5 text-red-500" />
-              </div>
-            )}
-          </div>
-          {emailError && (
+          <Input
+            label="Email"
+            size="lg"
+            value={email}
+            onChange={handleChangeEmail}
+            disabled={recoverySent}
+          />
+          {!isEmailValid && (
             <Typography variant="error" className="mt-1 text-red-500">
-              {emailError}
+              Please enter a valid email address.
             </Typography>
           )}
         </CardBody>

@@ -54,6 +54,7 @@ export function TabelPengeluaranLain() {
           })
           .catch((err) => {
             toast.error("Pengeluaran Lain Not Found");
+            fetchPengeluarans();
           });
       } else {
         fetchPengeluarans();
@@ -153,8 +154,8 @@ export function TabelPengeluaranLain() {
       <div className="flex justify-end items-center mb-4">
         <div className="mr-auto md:mr-4 md:w-26">
           <Input
+            type="date"
             label="Cari Pengeluaran"
-            icon={<MagnifyingGlassIcon className="h-4 w-4 text-blue-gray-500" />}
             value={searchQuery}
             onChange={handleSearchChange}
             onKeyDown={(e) => {
